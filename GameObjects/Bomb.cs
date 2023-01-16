@@ -10,7 +10,6 @@ namespace BombsOrTreatsHell.GameObjects
 
         public void OnPlayerInteract()
         {
-            Console.WriteLine("Бадум");
             Game.LoseGame();
         }
     }

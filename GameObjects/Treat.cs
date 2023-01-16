@@ -10,8 +10,9 @@ namespace BombsOrTreatsHell.GameObjects
 
         public void OnPlayerInteract()
         {
-            Console.WriteLine("УРААА");
             Game.UpScore();
+            if (Game.TreatAmount == 0)
+                Game.WinGame();
         }
     }
 }

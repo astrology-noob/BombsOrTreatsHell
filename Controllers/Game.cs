@@ -35,12 +35,19 @@ namespace BombsOrTreatsHell.Controllers
             BestScore = Math.Max(BestScore, Score);
         }
 
+        public void WinGame()
+        {
+            IsEnded = true;
+            BestScore = Math.Max(BestScore, Score);
+        }
+
         public void Restart()
         {
             IsEnded = false;
             Score = 0;
             GameBoard.Clear();
             player = new Player(this, BoardSize / 2, BoardSize / 2);
+            TreatAmount = 2;
             GenerateGameBoardInitially();
         }
 
@@ -90,7 +97,6 @@ namespace BombsOrTreatsHell.Controllers
 
         public void MixGameObjects()
         {
-            Console.WriteLine("Меняю местами объекты");
             for (int i = 0; i < BoardSize; i++)
             {
                 for (int j = 0; j < BoardSize; j++)
@@ -120,7 +126,7 @@ namespace BombsOrTreatsHell.Controllers
                 }
             }
 
-            GameBoard[player.PosX][player.PosY] = player;
+            GameBoard[player.PosY][player.PosX] = player;
         }
 
         public void PlacePlayer()
@@ -136,7 +142,7 @@ namespace BombsOrTreatsHell.Controllers
                 }
             }
 
-            GameBoard[player.PosX][player.PosY] = player;
+            GameBoard[player.PosY][player.PosX] = player;
         }
     }
 }

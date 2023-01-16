@@ -36,7 +36,7 @@ else
             <p>Кол-во бомб: @Game.BombAmount</p>
             <p>Кол-во вкусняшек: @Game.TreatAmount</p>
             <p>Игра закончена?: @Game.IsEnded</p>
-            <p>Позиция игрока: @Game.player.PosX, @Game.player.PosY</p>
+            <p>Позиция игрока: @Game.player.PosY, @Game.player.PosX</p>
             <p>Счёт игры: @Game.Score</p>
         </div>
     </div>
@@ -64,9 +64,9 @@ else
         await base.OnInitializedAsync();
     }
 
-    public void OnPlayerMove(int posX, int posY)
+    public void OnPlayerMove(int posY, int posX)
     {
-        Console.WriteLine($"I moved to {posX}, {posY}");
+        Console.WriteLine($"I moved to {posY}, {posX}");
         if (Game.GameBoard[posY][posX] is IGameItem gameItem)
         {
             gameItem.OnPlayerInteract();
