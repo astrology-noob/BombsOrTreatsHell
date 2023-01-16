@@ -15,29 +15,29 @@ namespace BombsOrTreatsHell.GameObjects
 
         public void MoveUp()
         {
-            if (PosX == 0) return;
-            PosX--;
-            OnMove?.Invoke(PosY, PosX);
-        }
-
-        public void MoveDown()
-        {
-            if (PosX == Game.BoardSize - 1) return;
-            PosX++;
-            OnMove?.Invoke(PosY, PosX);
-        }
-
-        public void MoveLeft()
-        {
             if (PosY == 0) return;
             PosY--;
             OnMove?.Invoke(PosY, PosX);
         }
 
-        public void MoveRight()
+        public void MoveDown()
         {
             if (PosY == Game.BoardSize - 1) return;
             PosY++;
+            OnMove?.Invoke(PosY, PosX);
+        }
+
+        public void MoveLeft()
+        {
+            if (PosX == 0) return;
+            PosX--;
+            OnMove?.Invoke(PosY, PosX);
+        }
+
+        public void MoveRight()
+        {
+            if (PosX == Game.BoardSize - 1) return;
+            PosX++;
             OnMove?.Invoke(PosY, PosX);
         }
 

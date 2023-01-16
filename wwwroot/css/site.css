@@ -94,7 +94,7 @@ a, .btn-link {
     justify-content: center;
 }
 
-.rows {
+.elems {
     width: calc(50px * 7);
     display: flex;
 }

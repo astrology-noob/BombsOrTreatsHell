@@ -24,6 +24,8 @@ else
                             <Field>
                                 @if (elem is not null)
                                 {
+                                    Console.WriteLine(Game.GameBoard.IndexOf(row));
+                                    Console.WriteLine(elem.Type);
                                     <GameObjectComponent GameObject="@elem" />
                                 }
                             </Field>
