@@ -1,0 +1,86 @@
+﻿@page "/"
+@using Toolbelt.Blazor.HotKeys2
+@using BombsOrTreatsHell.Controllers
+@inject Game Game
+
+@implements IDisposable
+@inject HotKeys HotKeys
+
+@if (Game.IsEnded)
+{
+    <button @onclick="@Game.Restart">Начать сначала?</button>
+}
+
+else
+{
+    <div class="game">
+        <div class="gameboard">
+            <div class="rows">
+                @foreach (var row in Game.GameBoard)
+                {
+                    <div class="elems">
+                        @foreach (GameObject? elem in row)
+                        {
+                            <Field>
+                                @if (elem is not null)
+                                {
+                                    <GameObjectComponent GameObject="@elem" />
+                                }
+                            </Field>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="data">
+            <p>Кол-во бомб: @Game.BombAmount</p>
+            <p>Кол-во вкусняшек: @Game.TreatAmount</p>
+            <p>Игра закончена?: @Game.IsEnded</p>
+            <p>Позиция игрока: @Game.player.PosX, @Game.player.PosY</p>
+            <p>Счёт игры: @Game.Score</p>
+        </div>
+    </div>
+}
+
+<button @onclick="@Game.player.MoveUp">Up</button>
+<button @onclick="@Game.player.MoveDown">Down</button>
+<button @onclick="@Game.player.MoveLeft">Left</button>
+<button @onclick="@Game.player.MoveRight">Right</button>
+
+
+@code {
+    HotKeysContext? HotKeysContext;    
+
+    protected override async Task OnInitializedAsync()
+    {
+        Game.player.OnMove += OnPlayerMove;
+
+        HotKeysContext = HotKeys.CreateContext()
+            .Add(ModCode.None, Code.ArrowUp, Game.player.MoveUp)
+            .Add(ModCode.None, Code.ArrowDown, Game.player.MoveDown)
+            .Add(ModCode.None, Code.ArrowLeft, Game.player.MoveLeft)
+            .Add(ModCode.None, Code.ArrowRight, Game.player.MoveRight);
+
+        await base.OnInitializedAsync();
+    }
+
+    public void OnPlayerMove(int posX, int posY)
+    {
+        Console.WriteLine($"I moved to {posX}, {posY}");
+        if (Game.GameBoard[posY][posX] is IGameItem gameItem)
+        {
+            gameItem.OnPlayerInteract();
+            Game.GameBoard[posY][posX] = null;
+            Game.MixGameObjects();
+        }
+        else
+            Game.PlacePlayer();
+
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        HotKeysContext?.Dispose();
+    }
+}
