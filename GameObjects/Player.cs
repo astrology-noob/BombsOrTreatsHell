@@ -41,6 +41,12 @@ namespace BombsOrTreatsHell.GameObjects
             OnMove?.Invoke(PosY, PosX);
         }
 
+        public void MoveToInitialPosition()
+        {
+            PosX = Game.BoardSize / 2;
+            PosY = Game.BoardSize / 2;
+        }
+
         public event Action<int, int>? OnMove;
     }
 }

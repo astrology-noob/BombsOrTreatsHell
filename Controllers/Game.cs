@@ -7,10 +7,12 @@ namespace BombsOrTreatsHell.Controllers
         public int MaxTime { get; private set; } = 60000;
         public int Score { get; private set; }
         public int BestScore { get; private set; }
-        public bool IsEnded { get; private set; }
-        public int BoardSize { get; private set; } = 5;
-        public int BombAmount { get; private set; } = 4;
-        public int TreatAmount { get; private set; } = 2;
+        public GameStatusEnum Status { get; private set; }
+        public int BoardSize { get; private set; } = 7;
+        public int BombAmount { get; private set; } = 20;
+        public int TreatAmount { get; private set; } = 15;
+        public static int SucessfulGames { get; private set; }
+        public static int BadGames { get; private set; }
         public Random rnd = new();
 
         public Player player = null!;
@@ -31,23 +33,25 @@ namespace BombsOrTreatsHell.Controllers
 
         public void LoseGame()
         {
-            IsEnded = true;
+            Status = GameStatusEnum.Defeat;
             BestScore = Math.Max(BestScore, Score);
+            BadGames++;
         }
 
         public void WinGame()
         {
-            IsEnded = true;
+            Status = GameStatusEnum.Victory;
             BestScore = Math.Max(BestScore, Score);
+            SucessfulGames++;
         }
 
         public void Restart()
         {
-            IsEnded = false;
+            Status = GameStatusEnum.InProcess;
             Score = 0;
             GameBoard.Clear();
-            player = new Player(this, BoardSize / 2, BoardSize / 2);
             TreatAmount = 2;
+            player.MoveToInitialPosition();
             GenerateGameBoardInitially();
         }
 
@@ -95,6 +99,7 @@ namespace BombsOrTreatsHell.Controllers
             }
         }
 
+        // кол-во объектов меняется, неправильно мешаются объекты
         public void MixGameObjects()
         {
             for (int i = 0; i < BoardSize; i++)

@@ -6,8 +6,10 @@
 @implements IDisposable
 @inject HotKeys HotKeys
 
-@if (Game.IsEnded)
+
+@if (Game.Status != GameStatusEnum.InProcess)
 {
+    <h1>@(Game.Status == GameStatusEnum.Victory ? "Вы победили!" : "Эх, само разочарование")</h1>
     <button @onclick="@Game.Restart">Начать сначала?</button>
 }
 
@@ -35,19 +37,13 @@ else
             </div>
         </div>
         <div class="data">
-            <p>Кол-во бомб: @Game.BombAmount</p>
-            <p>Кол-во вкусняшек: @Game.TreatAmount</p>
-            <p>Игра закончена?: @Game.IsEnded</p>
-            <p>Позиция игрока: @Game.player.PosY, @Game.player.PosX</p>
+            <p>Осталось @Game.TreatAmount вкусняшек</p>
             <p>Счёт игры: @Game.Score</p>
+            <p>Побед: @Game.SucessfulGames</p>
+            <p>Проигрышей: @Game.BadGames</p>
         </div>
     </div>
 }
-
-<button @onclick="@Game.player.MoveUp">Up</button>
-<button @onclick="@Game.player.MoveDown">Down</button>
-<button @onclick="@Game.player.MoveLeft">Left</button>
-<button @onclick="@Game.player.MoveRight">Right</button>
 
 
 @code {
